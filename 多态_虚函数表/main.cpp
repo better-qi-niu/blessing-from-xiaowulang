@@ -17,36 +17,39 @@ public:
 int Father::z = 0;
 
 typedef void(*func_t)(void);
+typedef func_t* vptr_t;
 
 int main(void) {
   Father father;
   cout << "sizeof(father)==" << sizeof(father) << endl;
 
-  cout << "对象地址：" << (int*)&father << endl;
-  int* vptr = (int*)*(int*)(&father);
+  cout << "对象地址：" << &father << endl;
+  vptr_t vptr = *(vptr_t*)&father;//提取father的地址，由于father第一个成员类型是vptr_t，所以father的地址可以当作虚函数表的地址，所以强制类型转换为(vptr_t*)。
 
   cout << "调用第1个虚函数：";
-  ((func_t) * (vptr + 0))();
+  (*(vptr + 0))();
 
   cout << "调用第2个虚函数：";
-  ((func_t) * (vptr + 1))();
+  (*(vptr + 1))();
 
   cout << "调用第3个虚函数：";
-  ((func_t) * (vptr + 2))();
+  (*(vptr + 2))();
 
   cout << "第1个数据成员的地址：" << endl;
   cout << &father.x << endl;
-  cout << std::hex << (int)&father + 4 << endl;
+  void* firstMemberAddr = (vptr_t*)&father + 1;//vptr_t*类型+1，代表跳过一个vptr_t类型的成员。
+  cout << std::hex << firstMemberAddr << endl;
   cout << "第1个数据成员的值：" << endl;
   cout << std::dec << father.x << endl;
-  cout << *(int*)((int)&father + 4) << endl;
+  cout << *(int*)firstMemberAddr << endl;
 
   cout << "第2个数据成员的地址：" << endl;
   cout << &father.y << endl;
-  cout << std::hex << (int)&father + 8 << endl;
+  void* secondMemberAddr = (int*)firstMemberAddr + 1;//int*类型+1，代表跳过一个int类型的成员。
+  cout << std::hex << secondMemberAddr << endl;
   cout << "第2个数据成员的值：" << endl;
   cout << std::dec << father.y << endl;
-  cout << *(int*)((int)&father + 8) << endl;
+  cout << *(int*)secondMemberAddr << endl;
 
   return 0;
 }
