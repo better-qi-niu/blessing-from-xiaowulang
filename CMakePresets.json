@@ -1,0 +1,341 @@
+﻿{
+  "version": 4,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 28
+  },
+  "configurePresets": [
+    {
+      "description": "设置C、C++语言标准。",
+      "name": "std-setting",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_STANDARD": {
+          "type": "INTERNAL",
+          "value": "14"
+        },
+        "CMAKE_CXX_STANDARD_REQUIRED": {
+          "type": "BOOL",
+          "value": true
+        },
+        "CMAKE_C_STANDARD": {
+          "type": "INTERNAL",
+          "value": "11"
+        },
+        "CMAKE_C_STANDARD_REQUIRED": {
+          "type": "BOOL",
+          "value": true
+        }
+      }
+    },
+    {
+      "description": "vcpkg基本配置，引入版本控制。须要设置 VCPKG_ROOT 环境变量。",
+      "name": "vcpkg-base",
+      "hidden": true,
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+    },
+    {
+      "description": "Windows基本配置。须要安装 Visual Studio 2022 。",
+      "name": "Windows-base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "generator": "Ninja Multi-Config",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "description": "Windows x64基本配置。",
+      "name": "x64-base",
+      "hidden": true,
+      "inherits": "Windows-base",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "description": "Windows x86基本配置。",
+      "name": "x86-base",
+      "hidden": true,
+      "inherits": "Windows-base",
+      "architecture": {
+        "value": "x86",
+        "strategy": "external"
+      }
+    },
+    {
+      "description": "Linux基本配置。须要安装 ninja-build 。",
+      "name": "Linux-base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "generator": "Ninja Multi-Config",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+          "sourceDir": "$env{HOME}/source/$ms{projectDirName}"
+        }
+      }
+    },
+    {
+      "description": "MacOS基本配置。须要安装 ninja-build 。",
+      "name": "MacOS-base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "generator": "Ninja Multi-Config",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+          "sourceDir": "$env{HOME}/source/$ms{projectDirName}"
+        }
+      }
+    },
+    {
+      "description": "Windows x64、vcpkg，使用MSVC生成器。",
+      "name": "x64-Multi-Config",
+      "displayName": "x64 Multi-Config",
+      "inherits": [
+        "std-setting",
+        "x64-base",
+        "vcpkg-base"
+      ],
+      "environment": {
+        "VCPKG_DEFAULT_TRIPLET": "x64-windows"
+      }
+    },
+    {
+      "description": "Windows x86、vcpkg，使用MSVC生成器。",
+      "name": "x86-Multi-Config",
+      "displayName": "x86 Multi-Config",
+      "inherits": [
+        "std-setting",
+        "x86-base",
+        "vcpkg-base"
+      ],
+      "environment": {
+        "VCPKG_DEFAULT_TRIPLET": "x86-windows"
+      }
+    },
+    {
+      "description": "Linux、vcpkg，使用Ninja生成器。",
+      "name": "Linux-Multi-Config",
+      "displayName": "Linux Multi-Config",
+      "inherits": [
+        "std-setting",
+        "Linux-base",
+        "vcpkg-base"
+      ],
+      "environment": {
+        "VCPKG_DEFAULT_TRIPLET": "x64-linux"
+      }
+    },
+    {
+      "description": "MacOS、vcpkg，使用Ninja生成器。",
+      "name": "MacOS-Multi-Config",
+      "displayName": "MacOS Multi-Config",
+      "inherits": [
+        "std-setting",
+        "MacOS-base",
+        "vcpkg-base"
+      ],
+      "environment": {
+        "VCPKG_DEFAULT_TRIPLET": "x64-osx"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Windows-base",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "x64-base",
+      "hidden": true,
+      "inherits": [ "Windows-base" ],
+      "configurePreset": "x64-Multi-Config"
+    },
+    {
+      "name": "x86-base",
+      "hidden": true,
+      "inherits": [ "Windows-base" ],
+      "configurePreset": "x86-Multi-Config"
+    },
+    {
+      "name": "Linux-base",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "configurePreset": "Linux-Multi-Config"
+    },
+    {
+      "name": "MacOS-base",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "configurePreset": "MacOS-Multi-Config"
+    },
+    {
+      "name": "x64-Debug",
+      "displayName": "Build x64 Debug",
+      "inherits": [ "x64-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "x64-Release",
+      "displayName": "Build x64 Release",
+      "inherits": [ "x64-base" ],
+      "configuration": "Release"
+    },
+    {
+      "name": "x86-Debug",
+      "displayName": "Build x86 Debug",
+      "inherits": [ "x86-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "x86-Release",
+      "displayName": "Build x86 Release",
+      "inherits": [ "x86-base" ],
+      "configuration": "Release"
+    },
+    {
+      "name": "Linux-Debug",
+      "displayName": "Build Linux Debug",
+      "inherits": [ "Linux-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "Linux-Release",
+      "displayName": "Build Linux Release",
+      "inherits": [ "Linux-base" ],
+      "configuration": "Release"
+    },
+    {
+      "name": "MacOS-Debug",
+      "displayName": "Build MacOS Debug",
+      "inherits": [ "MacOS-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "MacOS-Release",
+      "displayName": "Build MacOS Release",
+      "inherits": [ "MacOS-base" ],
+      "configuration": "Release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "Windows-base",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "x64-base",
+      "hidden": true,
+      "inherits": [ "Windows-base" ],
+      "configurePreset": "x64-Multi-Config"
+    },
+    {
+      "name": "x86-base",
+      "hidden": true,
+      "inherits": [ "Windows-base" ],
+      "configurePreset": "x86-Multi-Config"
+    },
+    {
+      "name": "Linux-base",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "configurePreset": "Linux-Multi-Config"
+    },
+    {
+      "name": "MacOS-base",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Darwin"
+      },
+      "configurePreset": "MacOS-Multi-Config"
+    },
+    {
+      "name": "x64-Debug",
+      "displayName": "Test x64 Debug",
+      "inherits": [ "x64-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "x64-Release",
+      "displayName": "Test x64 Release",
+      "inherits": [ "x64-base" ],
+      "configuration": "Release"
+    },
+    {
+      "name": "x86-Debug",
+      "displayName": "Test x86 Debug",
+      "inherits": [ "x86-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "x86-Release",
+      "displayName": "Test x86 Release",
+      "inherits": [ "x86-base" ],
+      "configuration": "Release"
+    },
+    {
+      "name": "Linux-Debug",
+      "displayName": "Test Linux Debug",
+      "inherits": [ "Linux-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "Linux-Release",
+      "displayName": "Test Linux Release",
+      "inherits": [ "Linux-base" ],
+      "configuration": "Release"
+    },
+    {
+      "name": "MacOS-Debug",
+      "displayName": "Test MacOS Debug",
+      "inherits": [ "MacOS-base" ],
+      "configuration": "Debug"
+    },
+    {
+      "name": "MacOS-Release",
+      "displayName": "Test MacOS Release",
+      "inherits": [ "MacOS-base" ],
+      "configuration": "Release"
+    }
+  ]
+}

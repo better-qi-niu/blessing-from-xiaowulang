@@ -470,3 +470,10 @@ compile_commands.json
 
 *_qmlcache.qrc
 
+# ---> Custom
+# vcpkg ignore
+vcpkg_installed/
+
+# CMake ignore
+CMakeUserPresets.json
+[Oo]ut/
