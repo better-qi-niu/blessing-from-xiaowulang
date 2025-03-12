@@ -42,8 +42,8 @@ int main(void) {
   Father father;
   cout << "sizeof(father)==" << sizeof(father) << endl;
 
-  cout << "对象地址：" << (int*)&father << endl;
-  int* vptr = (int*)*(int*)(&father);
+  cout << "对象地址：" << (long long*)&father << endl;
+  long long* vptr = (long long*)*(long long*)(&father);
 
   cout << "调用第1个虚函数：";
   ((func_t) * (vptr + 0))();
@@ -56,17 +56,17 @@ int main(void) {
 
   cout << "第1个数据成员的地址：" << endl;
   cout << &father.x << endl;
-  cout << std::hex << (int)&father + 4 << endl;
+  cout << std::hex << (long long)&father + 8 << endl;
   cout << "第1个数据成员的值：" << endl;
   cout << std::dec << father.x << endl;
-  cout << *(int*)((int)&father + 4) << endl;
+  cout << *(int*)((long long)&father + 8) << endl;
 
   cout << "第2个数据成员的地址：" << endl;
   cout << &father.y << endl;
-  cout << std::hex << (int)&father + 8 << endl;
+  cout << std::hex << (long long)&father + 12 << endl;
   cout << "第2个数据成员的值：" << endl;
   cout << std::dec << father.y << endl;
-  cout << *(int*)((int)&father + 8) << endl;
+  cout << *(int*)((long long)&father + 12) << endl;
 
   return 0;
 }
