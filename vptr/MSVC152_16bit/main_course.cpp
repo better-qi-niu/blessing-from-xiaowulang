@@ -26,7 +26,7 @@ public:
     cout << "Father::func3" << endl;
   }
   void func4() {
-    cout << "非虚函数：Father::func4" << endl;
+    cout << "non-virtual function: Father::func4" << endl;
   }
 public:
   int x;
@@ -40,31 +40,31 @@ typedef void(*func_t)(void);
 
 int main(void) {
   Father father;
-  cout << "sizeof(father)==" << sizeof(father) << endl;
+  cout << "sizeof(father) = " << sizeof(father) << endl;
 
-  cout << "对象地址：" << (int*)&father << endl;
+  cout << "Object addr:" << (int*)&father << endl;
   int* vptr = (int*)*(int*)(&father);
 
-  cout << "调用第1个虚函数：";
+  cout << "Call func1: ";
   ((func_t) * (vptr + 0))();
 
-  cout << "调用第2个虚函数：";
+  cout << "Call func2: ";
   ((func_t) * (vptr + 1))();
 
-  cout << "调用第3个虚函数：";
+  cout << "Call func3: ";
   ((func_t) * (vptr + 2))();
 
-  cout << "第1个数据成员的地址：" << endl;
+  cout << "Addr of father.x: " << endl;
   cout << &father.x << endl;
   cout << hex << (int)&father + 4 << endl;
-  cout << "第1个数据成员的值：" << endl;
+  cout << "father.x = " << endl;
   cout << dec << father.x << endl;
   cout << *(int*)((int)&father + 4) << endl;
 
-  cout << "第2个数据成员的地址：" << endl;
+  cout << "Addr of father.y: " << endl;
   cout << &father.y << endl;
   cout << hex << (int)&father + 8 << endl;
-  cout << "第2个数据成员的值：" << endl;
+  cout << "father.y = " << endl;
   cout << dec << father.y << endl;
   cout << *(int*)((int)&father + 8) << endl;
 
