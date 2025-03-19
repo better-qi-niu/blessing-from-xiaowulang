@@ -1,4 +1,4 @@
-ï»¿/*
+/*
 Copyright (c) 2025 better-qi-niu
 pointer is licensed under Mulan PSL v2.
 You can use this software according to the terms and conditions of the Mulan PSL v2.
@@ -10,14 +10,13 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 */
 
-#include <iostream>
+#include <iostream.h>
 
-using std::cout;
-using std::endl;
-
-//! @brief ç”¨äºæµ‹è¯•è™šå‡½æ•°è¡¨æŒ‡é’ˆçš„ç±»ã€‚åŒ…å«ä¸‰ä¸ªè™šå‡½æ•°å’Œä¸¤ä¸ªæ•°æ®æˆå‘˜ã€‚
+//! @brief ÓÃÓÚ²âÊÔĞéº¯Êı±íÖ¸ÕëµÄÀà¡£°üº¬Èı¸öĞéº¯ÊıºÍÁ½¸öÊı¾İ³ÉÔ±¡£
 class Father {
 public:
+  Father() :x(200), y(300) {}
+
   virtual void func1() {
     cout << "Father::func1" << endl;
   }
@@ -28,66 +27,63 @@ public:
     cout << "Father::func3" << endl;
   }
   void func4() {
-    cout << "éè™šå‡½æ•°ï¼šFather::func4" << endl;
+    cout << "·ÇĞéº¯Êı£ºFather::func4" << endl;
   }
 public:
-  int x = 200;
-  int y = 300;
+  int x;
+  int y;
   static int z;
 };
-int Father::z = 0;// åˆå§‹åŒ–é™æ€æˆå‘˜ã€‚
+int Father::z = 0;// ³õÊ¼»¯¾²Ì¬³ÉÔ±¡£
 
-//! @brief è™šå‡½æ•°ï¼ˆvirtual functionï¼‰æŒ‡é’ˆã€‚
+//! @brief Ğéº¯Êı£¨virtual function£©Ö¸Õë¡£
 typedef void(*vfptr_t)(void);
-//! @brief è™šå‡½æ•°è¡¨ï¼ˆvirtual function tableï¼‰æŒ‡é’ˆã€‚
-//! è™šå‡½æ•°è¡¨çš„æ¯ä¸ªå…ƒç´ æ˜¯ä¸€ä¸ªè™šå‡½æ•°æŒ‡é’ˆã€‚
+//! @brief Ğéº¯Êı±í£¨virtual function table£©Ö¸Õë¡£
+//! Ğéº¯Êı±íµÄÃ¿¸öÔªËØÊÇÒ»¸öĞéº¯ÊıÖ¸Õë¡£
 typedef vfptr_t* vtptr_t;
 
 int main(void) {
   Father father;
   cout << "sizeof(father)==" << sizeof(father) << endl;
 
-  cout << "å¯¹è±¡åœ°å€ï¼š" << &father << endl;
-  void* objAddr = &father;               //æå–fatherçš„åœ°å€ã€‚
-  vtptr_t* vtptrAddr = (vtptr_t*)objAddr;//å°†fatherçš„åœ°å€å¼ºåˆ¶ç±»å‹è½¬æ¢ä¸ºvtptr_t*ç±»å‹ã€‚
+  cout << "¶ÔÏóµØÖ·£º" << &father << endl;
+  void* objAddr = &father;               //ÌáÈ¡fatherµÄµØÖ·¡£
+  vtptr_t* vtptrAddr = (vtptr_t*)objAddr;//½«fatherµÄµØÖ·Ç¿ÖÆÀàĞÍ×ª»»Îªvtptr_t*ÀàĞÍ¡£
 
-  {// æµ‹è¯•è™šå‡½æ•°è¡¨æŒ‡é’ˆæ˜¯å¦æ­£ç¡®ã€‚
-    vtptr_t vtptr = *vtptrAddr;            //è·å–è™šå‡½æ•°è¡¨çš„åœ°å€ã€‚
+  {// ²âÊÔĞéº¯Êı±íÖ¸ÕëÊÇ·ñÕıÈ·¡£
+    vtptr_t vtptr = *vtptrAddr;            //»ñÈ¡Ğéº¯Êı±íµÄµØÖ·¡£
 
-    cout << "è°ƒç”¨ç¬¬1ä¸ªè™šå‡½æ•°ï¼š";
+    cout << "µ÷ÓÃµÚ1¸öĞéº¯Êı£º";
     vfptr_t vfunc1 = *vtptr;
     vfunc1();
 
-    cout << "è°ƒç”¨ç¬¬2ä¸ªè™šå‡½æ•°ï¼š";
+    cout << "µ÷ÓÃµÚ2¸öĞéº¯Êı£º";
     vfptr_t vfunc2 = *(vtptr + 1);
     vfunc2();
 
-    cout << "è°ƒç”¨ç¬¬3ä¸ªè™šå‡½æ•°ï¼š";
+    cout << "µ÷ÓÃµÚ3¸öĞéº¯Êı£º";
     vfptr_t vfunc3 = *(vtptr + 2);
     vfunc3();
   }
 
-  {// æµ‹è¯•è™šå‡½æ•°è¡¨åçš„æ•°æ®æˆå‘˜ã€‚
-    using std::hex;
-    using std::dec;
-
-    cout << "ç¬¬1ä¸ªæ•°æ®æˆå‘˜çš„åœ°å€ï¼š" << endl;
+  {// ²âÊÔĞéº¯Êı±íºóµÄÊı¾İ³ÉÔ±¡£
+    cout << "µÚ1¸öÊı¾İ³ÉÔ±µÄµØÖ·£º" << endl;
     cout << &father.x << endl;
-    // æµ‹è¯•xæ˜¯å¦åœ¨è™šå‡½æ•°è¡¨ä¹‹åã€‚
-    // è·å– father.x çš„åœ°å€ï¼ˆvtptrAddr + 1 ä»£è¡¨è·³è¿‡ vtptr ï¼‰ã€‚
+    // ²âÊÔxÊÇ·ñÔÚĞéº¯Êı±íÖ®ºó¡£
+    // »ñÈ¡ father.x µÄµØÖ·£¨vtptrAddr + 1 ´ú±íÌø¹ı vtptr £©¡£
     int* xAddr = (int*)(vtptrAddr + 1);
     cout << hex << xAddr << endl;
-    cout << "ç¬¬1ä¸ªæ•°æ®æˆå‘˜çš„å€¼ï¼š" << endl;
+    cout << "µÚ1¸öÊı¾İ³ÉÔ±µÄÖµ£º" << endl;
     cout << dec << father.x << endl;
     cout << *xAddr << endl;
 
-    cout << "ç¬¬2ä¸ªæ•°æ®æˆå‘˜çš„åœ°å€ï¼š" << endl;
+    cout << "µÚ2¸öÊı¾İ³ÉÔ±µÄµØÖ·£º" << endl;
     cout << &father.y << endl;
-    // æµ‹è¯•yæ˜¯å¦åœ¨xä¹‹åã€‚
-    // è·å– father.y çš„åœ°å€ï¼ˆxAddr + 1 ä»£è¡¨è·³è¿‡ father.x ï¼‰ã€‚
+    // ²âÊÔyÊÇ·ñÔÚxÖ®ºó¡£
+    // »ñÈ¡ father.y µÄµØÖ·£¨xAddr + 1 ´ú±íÌø¹ı father.x £©¡£
     int* yAddr = xAddr + 1;
     cout << hex << yAddr << endl;
-    cout << "ç¬¬2ä¸ªæ•°æ®æˆå‘˜çš„å€¼ï¼š" << endl;
+    cout << "µÚ2¸öÊı¾İ³ÉÔ±µÄÖµ£º" << endl;
     cout << dec << father.y << endl;
     cout << *yAddr << endl;
   }

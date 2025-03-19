@@ -1,4 +1,4 @@
-ï»¿/*
+/*
 Copyright (c) 2025 better-qi-niu
 pointer is licensed under Mulan PSL v2.
 You can use this software according to the terms and conditions of the Mulan PSL v2.
@@ -10,12 +10,12 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 */
 
-#include <iostream>
-
-using namespace std;
+#include <iostream.h>
 
 class Father {
 public:
+  Father() :x(200), y(300) {}
+
   virtual void func1() {
     cout << "Father::func1" << endl;
   }
@@ -26,11 +26,11 @@ public:
     cout << "Father::func3" << endl;
   }
   void func4() {
-    cout << "éžè™šå‡½æ•°ï¼šFather::func4" << endl;
+    cout << "·ÇÐéº¯Êý£ºFather::func4" << endl;
   }
 public:
-  int x = 200;
-  int y = 300;
+  int x;
+  int y;
   static int z;
 };
 
@@ -42,31 +42,31 @@ int main(void) {
   Father father;
   cout << "sizeof(father)==" << sizeof(father) << endl;
 
-  cout << "å¯¹è±¡åœ°å€ï¼š" << (long long*)&father << endl;
-  long long* vptr = (long long*)*(long long*)(&father);
+  cout << "¶ÔÏóµØÖ·£º" << (long*)&father << endl;
+  long* vptr = (long*)*(long*)(&father);
 
-  cout << "è°ƒç”¨ç¬¬1ä¸ªè™šå‡½æ•°ï¼š";
+  cout << "µ÷ÓÃµÚ1¸öÐéº¯Êý£º";
   ((func_t) * (vptr + 0))();
 
-  cout << "è°ƒç”¨ç¬¬2ä¸ªè™šå‡½æ•°ï¼š";
+  cout << "µ÷ÓÃµÚ2¸öÐéº¯Êý£º";
   ((func_t) * (vptr + 1))();
 
-  cout << "è°ƒç”¨ç¬¬3ä¸ªè™šå‡½æ•°ï¼š";
+  cout << "µ÷ÓÃµÚ3¸öÐéº¯Êý£º";
   ((func_t) * (vptr + 2))();
 
-  cout << "ç¬¬1ä¸ªæ•°æ®æˆå‘˜çš„åœ°å€ï¼š" << endl;
+  cout << "µÚ1¸öÊý¾Ý³ÉÔ±µÄµØÖ·£º" << endl;
   cout << &father.x << endl;
-  cout << std::hex << (long long)&father + 8 << endl;
-  cout << "ç¬¬1ä¸ªæ•°æ®æˆå‘˜çš„å€¼ï¼š" << endl;
-  cout << std::dec << father.x << endl;
-  cout << *(int*)((long long)&father + 8) << endl;
+  cout << hex << (long)&father + 8 << endl;
+  cout << "µÚ1¸öÊý¾Ý³ÉÔ±µÄÖµ£º" << endl;
+  cout << dec << father.x << endl;
+  cout << *(int*)((long)&father + 8) << endl;
 
-  cout << "ç¬¬2ä¸ªæ•°æ®æˆå‘˜çš„åœ°å€ï¼š" << endl;
+  cout << "µÚ2¸öÊý¾Ý³ÉÔ±µÄµØÖ·£º" << endl;
   cout << &father.y << endl;
-  cout << std::hex << (long long)&father + 12 << endl;
-  cout << "ç¬¬2ä¸ªæ•°æ®æˆå‘˜çš„å€¼ï¼š" << endl;
-  cout << std::dec << father.y << endl;
-  cout << *(int*)((long long)&father + 12) << endl;
+  cout << hex << (long)&father + 12 << endl;
+  cout << "µÚ2¸öÊý¾Ý³ÉÔ±µÄÖµ£º" << endl;
+  cout << dec << father.y << endl;
+  cout << *(int*)((long)&father + 12) << endl;
 
   return 0;
 }

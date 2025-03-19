@@ -1,1 +1,7 @@
 # For MSVC-1.52 projects
+*.WSP
+*.CV4
+*.bsc
+*.EXE
+*.VCW
+*.STS
